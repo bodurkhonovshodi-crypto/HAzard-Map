@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Hazard Watch">
+  <title>Past disasters · Pamir Hazard Watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 26 L11 11 L16 18 L21 8 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 26 C12 23, 18 24, 24 21" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/></svg><span class="brand-text"><b>Pamir Hazard Watch</b><span>GBAO · Tajikistan · 37–39°N</span></span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="index.html">Map</a>
+    <a href="data.html">Data</a>
+    <a href="events.html">Past disasters</a>
+    <a href="simulate.html">Simulation</a>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <div class="eyebrow">Gorno-Badakhshan · 1911 to today</div>
+    <h1>Past disasters</h1>
+    <p class="lede">Earthquakes, landslides, mudflows, avalanches and rockfall that hit GBAO: where they happened, what caused them and how much damage they did. Click a point on the map to jump to its story.</p>
+  </div>
+
+  <section class="block">
+    <div id="evmap" class="ev-map" aria-label="Map of past disasters"></div>
+    <div class="row-between">
+      <div class="filters" id="filters" role="group" aria-label="Show disaster type"></div>
+      <span class="hint" id="evcount"></span>
+    </div>
+  </section>
+
+  <section class="timeline" id="timeline" aria-label="Disasters, oldest first"></section>
+
+  <p class="foot">Numbers are copied from the sources under each story. Photos come from your AKAH and HVRA reports. To add a disaster, copy one block in <code>data/events.js</code> and change it.</p>
+</main>
+
+<div class="lightbox" id="lightbox" hidden><div><img id="lbImg" alt=""><p id="lbCap"></p></div></div>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="js/registry.js"></script>
+<script src="js/data-files.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app-shell.js"></script>
+<script src="js/events.js"></script>
+</body>
+</html>
