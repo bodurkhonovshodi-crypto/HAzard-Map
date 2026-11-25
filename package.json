@@ -1,0 +1,31 @@
+{
+  "name": "pamir-hazard-watch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pamir Hazard Watch: hazard map, data, past disasters and storm simulation for GBAO — as a PWA and an Android app",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "precache": "node scripts/precache.mjs",
+    "build": "npm run vendor && npm run precache",
+    "serve": "npx --yes http-server www -p 8080 -c-1",
+    "icons": "npx capacitor-assets generate --android --assetPath assets",
+    "android:sync": "npm run build && npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/share": "^8.0.3",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.2"
+  }
+}

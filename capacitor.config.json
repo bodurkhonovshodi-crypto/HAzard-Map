@@ -1,0 +1,18 @@
+{
+  "appId": "org.pamirhazardwatch.app",
+  "appName": "Pamir Hazard Watch",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#f3eee3"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css",
+      "style": "LIGHT"
+    },
+    "LocalNotifications": {
+      "iconColor": "#b8432c",
+      "smallIcon": "ic_stat_hazard"
+    }
+  }
+}

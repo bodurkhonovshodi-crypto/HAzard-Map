@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Hazard Watch">
+  <title>Pamir Hazard Watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-home">
+
+<header class="topbar">
+  <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 26 L11 11 L16 18 L21 8 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 26 C12 23, 18 24, 24 21" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/></svg><span class="brand-text"><b>Pamir Hazard Watch</b><span>GBAO · Tajikistan · 37–39°N</span></span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="index.html">Map</a>
+    <a href="data.html">Data</a>
+    <a href="events.html">Past disasters</a>
+    <a href="simulate.html">Simulation</a>
+  </nav>
+</header>
+
+<main class="home">
+  <div class="mapwrap"><div id="map" aria-label="Hazard map"></div></div>
+
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="chips" id="chips"></div>
+      <div class="tabs" role="tablist">
+        <button role="tab" type="button" data-tab="weather" aria-selected="true">Weather</button>
+        <button role="tab" type="button" data-tab="alerts" aria-selected="false">Alerts <b id="alertCount"></b></button>
+        <button role="tab" type="button" data-tab="layers" aria-selected="false">Layers</button>
+        <button role="tab" type="button" data-tab="rules" aria-selected="false">Rules</button>
+      </div>
+    </div>
+
+    <section class="tab" id="tab-weather">
+      <div class="row-between">
+        <div class="toggle" role="group" aria-label="Weather source">
+          <button id="modeLive" type="button">Live forecast</button>
+          <button id="modeManual" type="button">Test scenario</button>
+        </div>
+      </div>
+      <p class="status" id="status"></p>
+      <div class="presets" id="presets" hidden></div>
+      <div id="sections"></div>
+    </section>
+
+    <section class="tab" id="tab-alerts" hidden>
+      <div class="row-between">
+        <p class="status">What people in each area would receive.</p>
+        <button class="small" id="notifyBtn" type="button">Turn on desktop alerts</button>
+      </div>
+      <div class="alerts" id="alerts"></div>
+    </section>
+
+    <section class="tab" id="tab-layers" hidden>
+      <h3>What the symbols mean</h3>
+      <div class="legend-list">
+        <span><i class="sw" style="background:var(--ok)"></i>Normal</span>
+        <span><i class="sw" style="background:var(--warn)"></i>Watch</span>
+        <span><i class="sw" style="background:var(--crit)"></i>Warning</span>
+        <span><i class="ring thin"></i>Road survey avalanche site</span>
+        <span><i class="ring thick"></i>Village database avalanche (size = snow volume)</span>
+        <span><i class="zonebox"></i>Avalanche zone outline (KML)</span>
+        <span><i class="diamond"></i>Rockfall zone (Khorog)</span>
+        <span><i class="dmgbox"></i>Village with damaged houses (number of houses)</span>
+        <span><i class="pastbox"></i>Past mudflow, approximate area</span>
+      </div>
+      <h3>Map images</h3>
+      <div id="overlayControls" class="overlay-controls"></div>
+      <h3>Open your own file</h3>
+      <p class="hint">GeoJSON, KML or CSV with <code>lat</code> and <code>lon</code> columns. It is shown only in your browser and is not saved. To keep it, use <code>tools/geojson_to_js.py</code> (see the Data page).</p>
+      <input type="file" id="userFile" accept=".geojson,.json,.kml,.csv,.txt" multiple>
+      <ul class="userfiles" id="userFiles"></ul>
+    </section>
+
+    <section class="tab" id="tab-rules" hidden>
+      <p class="hint">Draft thresholds. Change them here to test, or for good in <code>js/rules.js</code>. Real values should come from specialists and past events.</p>
+      <div class="rulegrid" id="rulegrid"></div>
+    </section>
+  </aside>
+</main>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="js/registry.js"></script>
+<script src="js/data-files.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app-shell.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

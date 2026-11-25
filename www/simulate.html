@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Hazard Watch">
+  <title>Simulation · Pamir Hazard Watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-home">
+
+<header class="topbar">
+  <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 26 L11 11 L16 18 L21 8 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 26 C12 23, 18 24, 24 21" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/></svg><span class="brand-text"><b>Pamir Hazard Watch</b><span>GBAO · Tajikistan · 37–39°N</span></span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="index.html">Map</a>
+    <a href="data.html">Data</a>
+    <a href="events.html">Past disasters</a>
+    <a href="simulate.html">Simulation</a>
+  </nav>
+</header>
+
+<main class="home">
+  <div class="mapwrap"><div id="map" aria-label="Risk map for the chosen storm"></div></div>
+
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="row-between">
+        <h2>What if…?</h2>
+        <div class="toggle" role="group" aria-label="How to set the storm">
+          <button type="button" id="modeProb" aria-pressed="true">By how often</button>
+          <button type="button" id="modeOwn" aria-pressed="false">My own numbers</button>
+        </div>
+      </div>
+      <p class="status" id="climStatus">Loading 30 years of weather…</p>
+      <div class="tabs" role="tablist" aria-label="Kind of storm">
+        <button role="tab" type="button" data-ev="rain" aria-selected="true">Heavy rain</button>
+        <button role="tab" type="button" data-ev="snow" aria-selected="false">Heavy snow</button>
+        <button role="tab" type="button" data-ev="rainOnSnow" aria-selected="false">Rain on snow</button>
+      </div>
+    </div>
+
+    <section class="tab">
+      <div id="probBox" class="block" style="gap:10px">
+        <div class="field">A storm that happens about once in…
+          <div class="rp" id="rp" role="group" aria-label="Return period"></div>
+        </div>
+        <div class="chance" id="chance"></div>
+      </div>
+
+      <div id="ownBox" class="block" style="gap:10px" hidden>
+        <div class="field"><label for="sRain">Rain in one day (mm)</label><div class="slider"><input type="range" id="sRain" min="0" max="100" value="30"><output for="sRain"></output></div></div>
+        <div class="field"><label for="sSnow">New snow in one day (cm)</label><div class="slider"><input type="range" id="sSnow" min="0" max="100" value="0"><output for="sSnow"></output></div></div>
+        <div class="field"><label for="sSnow3">Snow over 3 days (cm)</label><div class="slider"><input type="range" id="sSnow3" min="0" max="150" value="0"><output for="sSnow3"></output></div></div>
+        <p class="hint">The same numbers are used in every valley.</p>
+      </div>
+
+      <div class="field"><label for="sTemp">Highest temperature that day, at mountain height (°C)</label><div class="slider"><input type="range" id="sTemp" min="-20" max="30" value="12"><output for="sTemp"></output></div></div>
+      <div class="row-between">
+        <label class="field" for="month" style="flex:1">Month
+          <select id="month">
+            <option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option>
+            <option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option>
+            <option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+          </select></label>
+        <label class="field" for="area" style="flex:2">Area
+          <select id="area"><option value="">All of GBAO in the app</option></select></label>
+      </div>
+
+      <h3>Result</h3>
+      <p class="hint">On the map, each valley is a coloured circle (mudflow and flood risk for the whole valley); hazard sites turn orange or red when the storm can set them off.</p>
+      <div class="stat-row">
+        <div class="stat lvl2"><b id="nWarn">0</b><span>valleys at Warning</span></div>
+        <div class="stat lvl1"><b id="nWatch">0</b><span>valleys at Watch</span></div>
+        <div class="stat"><b id="nSites">0</b><span>hazard sites active</span></div>
+      </div>
+      <p class="hint" id="exposure"></p>
+
+      <div id="sections"></div>
+
+      <h3>Most dangerous places in this storm</h3>
+      <p class="hint">Ranked by alert level, households at risk, avalanche size and zone intensity from your data. Click one to see it.</p>
+      <ol class="rank" id="rank"></ol>
+
+      <h3 id="climTitle">How big storms get here</h3>
+      <div id="climTable"></div>
+      <p class="hint">Return levels from daily ERA5 reanalysis 1991–2020 (Open-Meteo), at the forecast altitude of each valley, fitted with a Gumbel distribution. Reanalysis smooths mountain storms, so real local extremes can be larger. Use this as a teaching tool, not for real decisions.</p>
+    </section>
+  </aside>
+</main>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="js/registry.js"></script>
+<script src="js/data-files.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app-shell.js"></script>
+<script src="js/simulate.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Pamir Hazard Watch",
+  "short_name": "Hazard Watch",
+  "description": "Natural hazards in Gorno-Badakhshan: live hazard map with weather warnings, data downloads, past disasters and storm simulation.",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3eee3",
+  "theme_color": "#f3eee3",
+  "lang": "en",
+  "categories": ["weather", "education", "utilities"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Data", "url": "./data.html" },
+    { "name": "Past disasters", "url": "./events.html" },
+    { "name": "Simulation", "url": "./simulate.html" }
+  ]
+}

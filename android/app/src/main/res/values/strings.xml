@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pamir Hazard Watch</string>
+    <string name="title_activity_main">Pamir Hazard Watch</string>
+    <string name="package_name">org.pamirhazardwatch.app</string>
+    <string name="custom_url_scheme">org.pamirhazardwatch.app</string>
+</resources>

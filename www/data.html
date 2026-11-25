@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Hazard Watch">
+  <title>Data · Pamir Hazard Watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 26 L11 11 L16 18 L21 8 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 26 C12 23, 18 24, 24 21" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/></svg><span class="brand-text"><b>Pamir Hazard Watch</b><span>GBAO · Tajikistan · 37–39°N</span></span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="index.html">Map</a>
+    <a href="data.html">Data</a>
+    <a href="events.html">Past disasters</a>
+    <a href="simulate.html">Simulation</a>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <div class="eyebrow">Download · browse · find more</div>
+    <h1>Data</h1>
+    <p class="lede">Everything in this app, ready to download for QGIS, ArcGIS or Excel, plus free sources for boundaries, population, NDVI, elevation, climate and more for Gorno-Badakhshan.</p>
+    <div class="chips" id="totals"></div>
+  </div>
+
+  <section class="block" id="downloads">
+    <h2>Download the app's data</h2>
+    <p>GeoJSON opens in QGIS, ArcGIS and Google Earth. CSV opens in Excel (Russian text is kept). Sites without GPS are only in the CSV.</p>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Hazard data</h3>
+        <div class="dl-actions">
+          <button type="button" class="btn primary" id="dlAllGeo">Everything · GeoJSON</button>
+          <button type="button" class="btn" id="dlAllCsv">Everything · CSV</button>
+        </div>
+      </div>
+      <div class="tablebox" style="max-height:none">
+        <table>
+          <thead><tr><th>Dataset</th><th>Type</th><th>Sites</th><th>With GPS</th><th>From</th><th>Download</th></tr></thead>
+          <tbody id="dsRows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Map images, sections and disasters</h3></div>
+      <div class="tablebox" style="max-height:none">
+        <table>
+          <thead><tr><th>Layer</th><th>What it is</th><th>Download</th></tr></thead>
+          <tbody id="otherRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Site register</h2>
+    <p>Every site in the app. Click a name to open it on the map.</p>
+    <div class="panel">
+      <div class="panel-head">
+        <div class="tools">
+          <input id="q" type="search" placeholder="Search place, village, RF-04 …" aria-label="Search">
+          <select id="fDataset" aria-label="Dataset"><option value="">All datasets</option></select>
+          <select id="fSection" aria-label="Section"><option value="">All sections</option></select>
+          <label class="check"><input type="checkbox" id="fCheck"> Needs GPS or checking</label>
+        </div>
+        <div class="dl-actions">
+          <span class="hint" id="regCount"></span>
+          <button type="button" class="btn" id="dlFiltered">Download these · CSV</button>
+        </div>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Site</th><th>Dataset</th><th>District</th><th>Place</th><th>Section</th><th>Details</th><th>Location</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>More free data for GBAO</h2>
+    <p>Checked sources for the region. Most let you draw a box around GBAO and download just that part. After downloading, see "Put new data into the app" below.</p>
+    <div class="src-grid" id="sources"></div>
+  </section>
+
+  <section class="block">
+    <h2>Put new data into the app</h2>
+    <p>Quick look: on the Map page, open the <b>Layers</b> tab and choose a GeoJSON, KML or CSV file. To keep it in the app for everyone:</p>
+    <div class="src-grid">
+      <div class="src">
+        <h3>Boundaries, roads, population (GeoJSON)</h3>
+        <ol class="steps">
+          <li>In QGIS, clip the layer to GBAO and save it as GeoJSON in EPSG:4326.</li>
+          <li>Run the tool below.</li>
+          <li>Add the new file name to <code>js/data-files.js</code>.</li>
+        </ol>
+        <pre class="cmd">python tools/geojson_to_js.py gbao_districts.geojson data/layer_gbao_districts.js --title "GBAO districts" --color "#5b4a8a"</pre>
+      </div>
+      <div class="src">
+        <h3>NDVI, DEM, population grids (rasters)</h3>
+        <ol class="steps">
+          <li>Clip the raster to your area and export it as a PNG image in QGIS (Project → Import/Export → Export Map to Image), or use the slope tool for a DEM.</li>
+          <li>Read the corner coordinates and use <code>tools/image_bounds.py</code> to make a map layer.</li>
+        </ol>
+        <pre class="cmd">python tools/dem_to_slope.py my_dem.asc data/overlays/slope_x.png --utm-zone 42 --id slope-x --title "Slope, my area" --js data/overlay_slope_x.js</pre>
+      </div>
+      <div class="src">
+        <h3>New hazard sites</h3>
+        <ul>
+          <li><b>Excel table</b><span><code>tools/excel_to_js.py</code> (avalanche database layout)</span></li>
+          <li><b>Shapefile points</b><span><code>tools/shp_to_js.py</code></span></li>
+          <li><b>KML points or polygons</b><span><code>tools/kml_to_js.py</code></span></li>
+          <li><b>Damaged houses lists</b><span><code>tools/damage_lists_to_js.py</code></span></li>
+        </ul>
+        <p class="how">Then add the new file to <code>js/data-files.js</code>. The README has the exact commands.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">Hazard data: your shapefile, Excel databases, KML and AKAH/HVRA reports. Please credit the original authors when you share it. The damaged-houses layer has no residents' names.</p>
+</main>
+
+<script src="js/registry.js"></script>
+<script src="js/data-files.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app-shell.js"></script>
+<script src="js/data-page.js"></script>
+</body>
+</html>
